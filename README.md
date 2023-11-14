@@ -1,4 +1,4 @@
-# <span style="font-variant:small-caps;">Recap</span>: Towards Precise Radiology Report Generation via Dynamic Disease Progression Reasoning
+# <span style="font-variant:small-caps;">RECAP</span>: Towards Precise Radiology Report Generation via Dynamic Disease Progression Reasoning
 
 This repository is the implementation of [*RECAP: Towards Precise Radiology Report Generation via Dynamic Disease Progression Reasoning*](https://arxiv.org/abs/2310.13864).
 
