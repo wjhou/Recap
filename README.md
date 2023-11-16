@@ -12,6 +12,37 @@ Automating radiology report generation can significantly alleviate radiologists'
 - `torch==1.9.1`
 - `transformers==4.24.0`
 
+## Data Preparation and Preprocessing
+Please download the two datasets: [MIMIC-ABN](https://github.com/zzxslp/WCL/) and [MIMIC-CXR](https://physionet.org/content/mimic-cxr-jpg/2.0.0/), and put the annotation files into the `data` folder.
+- For observation preprocessing, we use [CheXbert](https://arxiv.org/pdf/2004.09167.pdf) to extract relevant observation information. Please follow the [instruction](https://github.com/stanfordmlgroup/CheXbert#prerequisites) to extract the observation tags. 
+- For progression preprocessing, we adopt [Chest ImaGenome](https://physionet.org/content/chest-imagenome/1.0.0/) to extract relevant observation information.
+- For entity preprocessing, we use [RadGraph](https://physionet.org/content/radgraph/1.0.0/) to extract relevant entities.
+
+### Step 1: MIMIC-ABN Data-split Recovery
+We recover the data-split of MIMIC-ABN according to `study_id` provided by the MIMIC-CXR dataset. We provide an example code as reference. Please run the following code and change the data location accordingly for preprocessig:
+```
+python src_preprocessing/run_abn_preprocess.py \
+      --mimic_cxr_annotation data/mimic_cxr_annotation.json \
+      --mimic_abn_annotation data/mimic_abn_annotation.json \
+      --image_path data/mimic_cxr/images/ \
+      --output_path data/mimic_abn_annotation_processed.json
+```
+
+## Training and Testing Models
+Recap is a two-stage framework as shown the figure above. Here are snippets for training and testing Recap.
+
+### Stage 1: Observation and Progression Prediction
+```
+chmod +x script_stage1/run_mimic_abn.sh
+./script_stage1/run_mimic_abn.sh 1
+```
+
+### Stage 2: SpatioTemporal-aware Report Generation
+```
+chmod +x script_stage2/run_mimic_abn.sh
+./script_stage2/run_mimic_abn.sh 1
+```
+
 ## Citation
 
 If you use the <span style="font-variant:small-caps;">Recap</span>, please cite our paper:
