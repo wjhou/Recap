@@ -2,7 +2,7 @@ version="2023xxxx"
 dataset="mimic_abn"
 radgraph_dir="radgraph/1.0.0/MIMIC-CXR_graphs.json"
 min_count=200
-chexbert_label="../CheXbert/src/data/$dataset/id2tag_ref_64.csv"
+chexbert_label="./CheXbert/$dataset/id2tag.csv"
 output_dir="data/$version/"
 temporal_id_dir="../$dataset/temporal_ids.json"
 
