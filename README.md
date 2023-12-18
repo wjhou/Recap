@@ -48,12 +48,16 @@ chmod +x script_stage2/run_mimic_abn.sh
 If you use the <span style="font-variant:small-caps;">Recap</span>, please cite our paper:
 
 ```bibtex
-@misc{hou2023recap,
-      title={RECAP: Towards Precise Radiology Report Generation via Dynamic Disease Progression Reasoning},
-      author={Wenjun Hou and Yi Cheng and Kaishuai Xu and Wenjie Li and Jiang Liu},
-      year={2023},
-      eprint={2310.13864},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{hou-etal-2023-recap,
+    title = "{RECAP}: Towards Precise Radiology Report Generation via Dynamic Disease Progression Reasoning",
+    author = "Hou, Wenjun and Cheng, Yi and Xu, Kaishuai and Li, Wenjie and Liu, Jiang",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2023",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-emnlp.140",
+    doi = "10.18653/v1/2023.findings-emnlp.140",
+    pages = "2134--2147",
 }
 ```
