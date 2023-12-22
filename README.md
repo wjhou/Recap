@@ -20,6 +20,10 @@ Please download the two datasets: [MIMIC-ABN](https://github.com/zzxslp/WCL/) an
 - For observation preprocessing, we use [CheXbert](https://arxiv.org/pdf/2004.09167.pdf) to extract relevant observation information. Please follow the [instruction](https://github.com/stanfordmlgroup/CheXbert#prerequisites) to extract the observation tags. 
 - For progression preprocessing, we adopt [Chest ImaGenome](https://physionet.org/content/chest-imagenome/1.0.0/) to extract relevant observation information.
 - For entity preprocessing, we use [RadGraph](https://physionet.org/content/radgraph/1.0.0/) to extract relevant entities.
+- For CE evaluation, please clone CheXbert into the folder and download the checkpoint [chexbert.pth](https://stanfordmedicine.box.com/s/c3stck6w6dol3h36grdc97xoydzxd7w9) into CheXbert:
+```
+git clone https://github.com/stanfordmlgroup/CheXbert.git
+```
 
 ### Step 1: MIMIC-ABN Data-split Recovery
 We recover the data-split of MIMIC-ABN according to `study_id` provided by the MIMIC-CXR dataset. We provide an example code as reference. Please run the following code and change the data location accordingly for preprocessig:
