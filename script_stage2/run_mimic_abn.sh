@@ -5,7 +5,7 @@ export TRANSFORMERS_OFFLINE=false
 suffix=""
 warmup_ratio=0.0
 max_tgt_length=64
-num_train_epochs=10
+num_train_epochs=5
 overwrite_output_dir=false
 evaluation_strategy=epoch
 per_device_train_batch_size=32
@@ -22,9 +22,9 @@ beta=1
 dataloader_num_workers=8
 log_level="info"
 report_to="none"
-chexbert_label="./CheXbert/mimic_abn/id2tag.csv"
+chexbert_label="./CheXbert/src/data/mimic_abn/id2tag.csv"
 annotation_file="./mimic_abn/annotation.json"
-miss_annotation_file="./mimic_abn/miss_annotation.json"
+miss_annotation_file="./mimic_abn/ref_annotation.json"
 stage1_model_name_or_path=$2
 stage1_eval_file=$3
 graph_version=$4
@@ -33,16 +33,6 @@ date=$5
 topk=$6
 lambda_=$7
 output_dir="./tmp_stage2/mimic_abn_ablation_${date}_top${topk}_lambda${lambda_}/"
-
-
-
-if [ "$wo_obs" -ne 1 ];
-then
-    echo "********** Load Stage 1 Model **********"
-    echo "********** Load Stage 1 Model **********"
-    echo "********** Load Stage 1 Model **********"
-    num_train_epochs=5
-fi
 
 if [ "$1" -ne 1 ];
 then
@@ -70,12 +60,8 @@ python3 -u ./src_stage2/run_ende.py \
     --history "./mimic_abn/temporal_ids.json" \
     --image_path ./mimic_cxr/images/ \
     --chexbert_label $chexbert_label \
-    --is_stage1_pretrained 0 \
+    --is_stage1_pretrained 1 \
     --is_temporal 1 \
-    --wo_op $wo_op \
-    --wo_obs $wo_obs \
-    --wo_pro $wo_pro \
-    --wo_prr $wo_prr \
     --topk $topk \
     --lambda_ $lambda_ \
     --do_train \
