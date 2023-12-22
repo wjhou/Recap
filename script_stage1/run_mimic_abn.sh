@@ -25,7 +25,7 @@ log_level="info"
 report_to="wandb"
 chexbert_label="./CheXbert/mimic_abn/id2tag.csv"
 annotation_file="./mimic_abn/annotation.json"
-miss_annotation_file="./mimic_abn/miss_annotation.json"
+miss_annotation_file="./mimic_abn/ref_annotation.json" # collected from the original annotation file, same format of the annotation_file
 output_dir="./tmp_stage1/mimic_abn_stage1/"
 
 if [ "$1" -ne 1 ];
