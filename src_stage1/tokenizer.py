@@ -1,10 +1,8 @@
-import copy
 import json
 import re
 from collections import Counter, defaultdict
 
 import pandas as pd
-from transformers.tokenization_utils import PreTrainedTokenizer
 import os
 import pickle
 
@@ -16,10 +14,7 @@ class Tokenizer:
         self.ann_path = config.annotation_file
         self.threshold = config.threshold
         self.dataset = config.dataset
-        if self.dataset == "iu_xray":
-            self.clean_report = Tokenizer.clean_report_iu_xray
-        else:
-            self.clean_report = Tokenizer.clean_report_mimic_cxr
+        self.clean_report = Tokenizer.clean_report_mimic_cxr
         print(self.clean_report)
         self.ann = json.loads(open(self.ann_path, "r").read())
         self.token2idx, self.idx2token, self.special_tokens = self.create_vocabulary()
@@ -44,47 +39,6 @@ class Tokenizer:
             token2idx[token] = idx
             idx2token[idx] = token
         return token2idx, idx2token, special_tokens[:-1]
-
-    @staticmethod
-    def clean_report_iu_xray(report):
-        def report_cleaner(t):
-            return (
-                t.replace("..", ".")
-                .replace("..", ".")
-                .replace("..", ".")
-                .replace("1. ", "")
-                .replace(". 2. ", ". ")
-                .replace(". 3. ", ". ")
-                .replace(". 4. ", ". ")
-                .replace(". 5. ", ". ")
-                .replace(" 2. ", ". ")
-                .replace(" 3. ", ". ")
-                .replace(" 4. ", ". ")
-                .replace(" 5. ", ". ")
-                .strip()
-                .lower()
-                .split(". ")
-            )
-
-        def sent_cleaner(t):
-            return re.sub(
-                "[.,?;*!%^&_+():-\[\]{}]",
-                "",
-                t.replace('"', "")
-                .replace("/", "")
-                .replace("\\", "")
-                .replace("'", "")
-                .strip()
-                .lower(),
-            )
-
-        tokens = [
-            sent_cleaner(sent).strip() + " ."
-            for sent in report_cleaner(report)
-            if len(sent_cleaner(sent).strip()) > 0
-        ]
-        report = " ".join(tokens)
-        return report
 
     @staticmethod
     def clean_report_mimic_cxr(report):
@@ -160,8 +114,6 @@ class Tokenizer:
             tags = pd.read_csv(tag_path)
             with open(cached_path, "wb") as f:
                 pickle.dump(tags, file=f)
-        # tags = tags.fillna(0).replace(-1, 1)
-        # tags = tags.replace(-1, 1).replace(0, 1).fillna(0)
         tags = tags.replace(-1, 1).fillna(2)
         diseases = list(tags)[2:]
         id2tags = defaultdict(list)
@@ -240,33 +192,3 @@ class Tokenizer:
 
     def save_pretrained(self, save_directory):
         return ""
-
-    def update_progression_tokens(self, observations, statuses):
-        token_id = len(self.token2idx)
-        for obs in observations:
-            for status in statuses:
-                token = f"[{obs}_{status}]"
-                if token not in self.token2idx:
-                    self.token2idx[token] = token_id
-                    self.idx2token[token_id] = token
-                    self.special_tokens.append(token)
-                    token_id += 1
-        self.token2idx["[PRO]"] = token_id
-        self.idx2token[token_id] = "[PRO]"
-        self.special_tokens.append("[PRO]")
-
-    def search_progression_token(self, observation, status):
-        return self.token2idx[f"[{observation}_{status}]"]
-
-
-class TagTokenizer:
-    def __init__(self, header) -> None:
-        self.head2id = {head: idx for idx, head in enumerate(header)}
-
-    def encode(self, tags):
-        tag_ids = []
-        for tag in tags:
-            tag_ids.append(self.head2id[tag])
-        if len(tag_ids) == 0:
-            tag_ids = [len(self.head2id) + 1]
-        return tag_ids

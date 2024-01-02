@@ -4,7 +4,7 @@ import json
 import argparse
 import os
 from constants import TEM_KEYWORDS
-from nltk.corpus import stopwords, wordnet
+from nltk.corpus import stopwords
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -13,8 +13,8 @@ from tokenizer import Tokenizer
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", type=str, required=True, help="the name of dataset")
 parser.add_argument("--output_dir", type=str, required=True, help="the output path")
-parser.add_argument("--min_count", type=int, default=5, help="min_count")
-parser.add_argument("--chexbert_label", type=str, required=True, help="the output path")
+parser.add_argument("--chexbert_label", type=str, required=True)
+parser.add_argument("--radgraph_dir", type=str, required=True)
 
 
 def tag2obs(x, y):
@@ -45,7 +45,6 @@ if __name__ == "__main__":
 
     config = parser.parse_args()
     dataset = config.dataset
-    min_count = config.min_count
     min_frequent = 3 if "mimic_abn" in dataset else 10
 
     print("dataset: ", dataset)
@@ -73,11 +72,7 @@ if __name__ == "__main__":
     key_tuple = defaultdict(int)
     window = 0
     if not os.path.exists(sem_path):
-        with open(
-            "/home/wenjun/repo/report_gen/physionet.org/files/radgraph/1.0.0/MIMIC-CXR_graphs.json",
-            "r",
-            encoding="utf-8",
-        ) as f:
+        with open(config.radgraph_dir, "r", encoding="utf-8") as f:
             radgraph = json.load(f)
             for key in radgraph:
                 if key in collect_ids:
@@ -87,7 +82,6 @@ if __name__ == "__main__":
                             continue
                         for relation in entity["relations"]:
                             if "modify" in relation or "located_at" in relation:
-                                # if "modify" in relation:
                                 k1 = [
                                     z.strip().lower()
                                     for z in entity["tokens"].split()
@@ -114,7 +108,7 @@ if __name__ == "__main__":
                 f.write(a + "\n")
 
             for b in key_tuple:
-                f.write("-modify-".join(b) + "," + str(key_tuple[b]) + "\n")
+                f.write("-rel-".join(b) + "," + str(key_tuple[b]) + "\n")
     else:
         with open(sem_path, "r", encoding="utf-8") as f:
             window = int(f.readline().strip())
@@ -122,20 +116,16 @@ if __name__ == "__main__":
                 line = line.strip()
                 if len(line) == 0:
                     continue
-                if "-modify-" in line:
+                if "-rel-" in line:
                     line = line.split(",")
-                    key_tuple[tuple(line[0].split("-modify-"))] = int(line[1])
+                    key_tuple[tuple(line[0].split("-rel-"))] = int(line[1])
                 else:
                     spatial_keywords.add(line)
     spatial_keywords = set()
 
     for k1, k2 in key_tuple:
-        if key_tuple[(k1, k2)] <= (50 if "mimic_abn" in dataset else 50):
-            # if key_tuple[(k1, k2)] <= 50:
+        if key_tuple[(k1, k2)] <= 50:
             continue
-        # if k1 not in TEM_KEYWORDS and key_tuple[(k1, k2)] >= (50 if "mimic_abn" in dataset else 200):
-        # if key_tuple[(k1, k2)] >= (50 if "mimic_abn" in dataset else 200):
-        #     spatial_keywords.add(k1)
         if k1 not in TEM_KEYWORDS:
             spatial_keywords.add(k1)
         if k2 not in TEM_KEYWORDS:
@@ -200,9 +190,7 @@ if __name__ == "__main__":
             observation = [
                 o for o in sentences[pos]["observation"] if o in observations
             ]
-            # if len(observation) == 0:
-            if True:
-                observation.append(no_finding)
+            observation.append(no_finding)
             for obs in observations:
                 if obs not in sem_stat_all:
                     sem_stat_all[obs] = defaultdict(int)
@@ -211,50 +199,6 @@ if __name__ == "__main__":
                         sem_stat_all[obs][token] += 1
                     else:
                         sem_stat_all[obs]["_" + token] += 1
-
-    # max_stat = defaultdict(int)
-    # for obs in sem_stat_all:
-    #     # if "No Finding" in obs:
-    #     #     continue
-    #     flip_obs = (
-    #         obs.replace("Positive", "Negative")
-    #         if "Positive" in obs
-    #         else obs.replace("Negative", "Positive")
-    #     )
-    #     stat = {}
-    #     for k, v in sem_stat_all[obs].items():
-    #         if k.startswith("_"):
-    #             continue
-    #         count = v + sem_stat_all[flip_obs].get(k, 0)
-    #         max_stat[k] = max(max_stat[k], count)
-    # new_sem_stat_all = {}
-    # for obs in sem_stat_all:
-    #     if "No Finding" in obs:
-    #         continue
-    #     flip_obs = (
-    #         obs.replace("Positive", "Negative")
-    #         if "Positive" in obs
-    #         else obs.replace("Negative", "Positive")
-    #     )
-    #     stat = {}
-    #     for k, v in sem_stat_all[obs].items():
-    #         count = v + sem_stat_all[flip_obs].get(k, 0)
-    #         # count2 = sem_stat_all["No Finding:Negative"].get(k, 0) + sem_stat_all[
-    #         #     "No Finding:Positive"
-    #         # ].get(k, 0)
-    #         # if not k.startswith("_") and count <= sem_stat[k] // len(observation_category) * 2:
-    #         # if not k.startswith("_") and (count <= count2 * 0.5):
-    #         if not k.startswith("_") and count <= max_stat[k] * 0.5:
-    #             # print(obs, k, count, max_stat[k] * 0.25, count2 * 0.75)
-    #             # if not k.startswith("_") and count <= count2:
-    #             k = "_" + k
-    #             stat[k] = v + sem_stat_all[obs].get(k, 0)
-    #         if k not in stat:
-    #             stat[k] = v
-    #     new_sem_stat_all[obs] = stat
-    # new_sem_stat_all["No Finding:Positive"] = sem_stat_all["No Finding:Positive"]
-    # new_sem_stat_all["No Finding:Negative"] = sem_stat_all["No Finding:Negative"]
-    # sem_stat_all = new_sem_stat_all
 
     sem_stat_all["ALL"] = sem_stat
     sem_stat_all = {
