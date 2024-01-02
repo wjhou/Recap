@@ -54,6 +54,9 @@ class DataTrainingArguments:
     )
     chexbert_label: Optional[str] = field(default=None)
     debug_model: Optional[bool] = field(default=False)
+    max_context_length: Optional[int] = field(
+        default=256,
+    )
     max_tgt_length: Optional[int] = field(
         default=64,
     )
@@ -103,9 +106,5 @@ class DataTrainingArguments:
     )
     alpha: Optional[float] = field(default=3)
     beta: Optional[float] = field(default=3)
-    wo_op: Optional[int] = field(default=1)
-    wo_obs: Optional[int] = field(default=1)
-    wo_pro: Optional[int] = field(default=1)
-    wo_prr: Optional[int] = field(default=1)
     topk: Optional[int] = field(default=10)
     lambda_: Optional[float] = field(default=0.5)

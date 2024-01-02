@@ -13,7 +13,12 @@ def create_optimizer(model, args, fast_lr=1e-4):
     decay_parameters = [name for name in decay_parameters if "bias" not in name]
 
     fast_params = []
+    # for n, _ in model.named_parameters():
+    # if "visual_encoder" not in n and "Bert" not in n:
+    #     fast_params.append(n)
+
     for n, _ in model.named_parameters():
+        # if not n.startswith("model.decoder"):
         if not n.startswith("gpt_with_lm_head"):
             fast_params.append(n)
 

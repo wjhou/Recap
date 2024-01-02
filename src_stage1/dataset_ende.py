@@ -1,11 +1,14 @@
 import os
 
 from torch.utils.data import Dataset
+from torchvision import transforms
 import torch
 from data_arguments import DataTrainingArguments
 from data_process_ende import process_examples
+from tokenizer import Tokenizer
 from tqdm import tqdm
 from PIL import Image
+from transformers import GPT2Tokenizer
 
 
 def load_images(root_path, image_paths):

@@ -303,4 +303,4 @@ def eval_text(
             encoding="utf-8",
         ) as f:
             json.dump(output_data, f, ensure_ascii=False, indent=4)
-    return {"eval_macro_f1": target}
+    return {"eval_BLEU_4": target}

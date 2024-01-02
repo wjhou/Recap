@@ -50,7 +50,6 @@ class Seq2SeqTrainerGenMetrics(Seq2SeqTrainer):
 
         model.eval()
 
-        # Only for single GPU training
         self.callback_handler.eval_dataloader = dataloader
         # Do this before wrapping.
         eval_dataset = dataloader.dataset

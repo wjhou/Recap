@@ -133,6 +133,7 @@ def main():
         train_idxs=train_idxs,
     )
 
+
     from models.modeling_vit import VisualEncoder
 
     checkpoint = "GanjinZero/biobart-base"
