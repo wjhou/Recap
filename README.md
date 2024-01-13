@@ -4,6 +4,7 @@ This repository is the implementation of [RECAP: Towards Precise Radiology Repor
 
 ## Update
 
+- [2024/01/13] Checkpoints (Stage 1 and Stage 2) for the MIMIC-ABN dataset are available at [Google Drive](https://drive.google.com/drive/folders/1kGVGeqvGG__jUh8Uds-SMypUD3BPGP5U?usp=sharing)
 - [2024/01/12] Checkpoints (Stage 1 and Stage 2) for the MIMIC-CXR dataset are available at [Google Drive](https://drive.google.com/drive/folders/1Tdu1d_OaxiGGoPEpajvHaolzD99mz7u4?usp=sharing)
 
 ## Overview
