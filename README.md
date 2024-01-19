@@ -42,6 +42,13 @@ python src_preprocessing/run_abn_preprocess.py \
       --output_path data/mimic_abn_annotation_processed.json
 ```
 
+## Trained Model Weights
+
+Trained model weights on two datasets are available at:
+
+- MIMIC-ABN: [Google Drive](https://drive.google.com/drive/folders/1kGVGeqvGG__jUh8Uds-SMypUD3BPGP5U?usp=sharing)
+- MIMIC-CXR: [Google Drive](https://drive.google.com/drive/folders/1Tdu1d_OaxiGGoPEpajvHaolzD99mz7u4?usp=sharing)
+
 ## Training and Testing Models
 
 Recap is a two-stage framework as shown the figure above. Here are snippets for training and testing Recap.
