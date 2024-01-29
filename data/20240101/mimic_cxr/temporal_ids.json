@@ -1,0 +1,26 @@
+{
+    "train": {
+        "10cd06e9-5443fef9-9afbe903-e2ce1eb5-dcff1097": {
+            "object_id": "4bb710ab-ab7d4781-568bcd6e-5079d3e6-7fdb61b6",
+            "predicate": [
+                "No status change"
+            ]
+        }
+    },
+    "test": {
+        "10cd06e9-5443fef9-9afbe903-e2ce1eb5-dcff1097": {
+            "object_id": "4bb710ab-ab7d4781-568bcd6e-5079d3e6-7fdb61b6",
+            "predicate": [
+                "No status change"
+            ]
+        }
+    },
+    "val": {
+        "10cd06e9-5443fef9-9afbe903-e2ce1eb5-dcff1097": {
+            "object_id": "4bb710ab-ab7d4781-568bcd6e-5079d3e6-7fdb61b6",
+            "predicate": [
+                "No status change"
+            ]
+        }
+    }
+}
