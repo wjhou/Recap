@@ -30,7 +30,7 @@ Please download the two datasets: [MIMIC-ABN](https://github.com/zzxslp/WCL/) an
 git clone https://github.com/stanfordmlgroup/CheXbert.git
 ```
 
-We share the [encrypted reports](https://drive.google.com/drive/folders/1hu9rhcsQuGSE0U6BpQ_RpL1r03L9EFax?usp=drive_link) for the MIMIC-CXR and MIMIC-ABN datasets. To decrypt the reports, you will need to download the `mimic-cxr-2.0.0-split.csv.gz` from [here](https://physionet.org/content/mimic-cxr-jpg/2.1.0/).
+We share the [encrypted reports](https://drive.google.com/drive/folders/1hu9rhcsQuGSE0U6BpQ_RpL1r03L9EFax?usp=drive_link) for the MIMIC-CXR and MIMIC-ABN datasets. To decrypt the reports, you will need to download the `mimic-cxr-2.0.0-split.csv.gz` from [here](https://physionet.org/content/mimic-cxr-jpg/2.1.0/). __Just a reminder: please send me an email before accessing the dataset.__
 
 ### Step 1: MIMIC-ABN Data-split Recovery
 
